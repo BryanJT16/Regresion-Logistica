@@ -1,112 +1,145 @@
-# Plantilla de Proyecto de Ciencia de Datos
+# Campaña de Marketing Bancario
 
-Esta plantilla está diseñada para impulsar proyectos de ciencia de datos proporcionando una configuración básica para conexiones de base de datos, procesamiento de datos, y desarrollo de modelos de aprendizaje automático. Incluye una organización estructurada de carpetas para tus conjuntos de datos y un conjunto de paquetes de Python predefinidos necesarios para la mayoría de las tareas de ciencia de datos.
+## 📘 Descripción del Proyecto
 
-## Estructura
+Este proyecto tiene como objetivo analizar una campaña de marketing telefónica realizada por un banco portugués, con el fin de identificar a los clientes con mayor probabilidad de suscribir un **depósito a largo plazo**.  
+A través de técnicas de **análisis exploratorio de datos (EDA)** y **modelado predictivo**, se busca optimizar los esfuerzos de marketing y mejorar la rentabilidad de las campañas.
 
-El proyecto está organizado de la siguiente manera:
+---
 
-- **`src/app.py`** → Script principal de Python donde correrá tu proyecto.
-- **`src/explore.ipynb`** → Notebook para exploración y pruebas. Una vez finalizada la exploración, migra el código limpio a `app.py`.
-- **`src/utils.py`** → Funciones auxiliares, como conexión a bases de datos.
-- **`requirements.txt`** → Lista de paquetes de Python necesarios.
-- **`models/`** → Contendrá tus clases de modelos SQLAlchemy.
-- **`data/`** → Almacena los datasets en diferentes etapas:
-  - **`data/raw/`** → Datos sin procesar.
-  - **`data/interim/`** → Datos transformados temporalmente.
-  - **`data/processed/`** → Datos listos para análisis.
+## 🧩 Contexto Empresarial
 
+Los depósitos a largo plazo permiten a las instituciones bancarias retener fondos de los clientes durante un período determinado, lo que mejora la capacidad de inversión del banco.  
+Las campañas de marketing de este tipo de producto se llevan a cabo principalmente mediante llamadas telefónicas. Si un cliente no se encuentra disponible en el momento del contacto, se le vuelve a llamar posteriormente.
 
-## ⚡ Configuración Inicial en Codespaces (Recomendado)
+Debido a una disminución en los ingresos, el banco desea enfocar sus recursos en aquellos clientes con **mayor probabilidad de aceptar la oferta**, evitando pérdidas de tiempo y dinero.
 
-No es necesario realizar ninguna configuración manual, ya que **Codespaces se configura automáticamente** con los archivos predefinidos que ha creado la academia para ti. Simplemente sigue estos pasos:
+---
 
-1. **Espera a que el entorno se configure automáticamente**.
-   - Todos los paquetes necesarios y la base de datos se instalarán por sí mismos.
-   - El `username` y `db_name` creados automáticamente están en el archivo **`.env`** en la raíz del proyecto.
-2. **Una vez que Codespaces esté listo, puedes comenzar a trabajar inmediatamente**.
+## 🎯 Objetivos
 
+- Analizar los datos históricos de campañas de marketing anteriores.  
+- Identificar patrones y variables más relevantes que influyen en la suscripción del producto.  
+- Construir un modelo predictivo que permita estimar la probabilidad de éxito de futuras campañas.  
+- Presentar conclusiones y recomendaciones basadas en los resultados obtenidos.
 
-## 💻 Configuración en Local (Solo si no puedes usar Codespaces)
+---
 
-**Prerrequisitos**
+### Resumen de Características
 
-Asegúrate de tener Python 3.11+ instalado en tu máquina. También necesitarás pip para instalar los paquetes de Python.
+| Columna | Tipo de Dato | Recuento No Nulo | Descripción |
+| :--- | :--- | :--- | :--- |
+| **age** | `int64` | 41188 | Edad del cliente. |
+| **job** | `object` | 41188 | Tipo de trabajo (e.g., 'admin.', 'blue-collar'). |
+| **marital** | `object` | 41188 | Estado civil. |
+| **education** | `object` | 41188 | Nivel educativo. |
+| **default** | `object` | 41188 | ¿Tiene crédito en mora? ('yes', 'no', 'unknown'). |
+| **housing** | `object` | 41188 | ¿Tiene préstamo hipotecario? ('yes', 'no', 'unknown'). |
+| **loan** | `object` | 41188 | ¿Tiene préstamo personal? ('yes', 'no', 'unknown'). |
+| **contact** | `object` | 41188 | Tipo de comunicación de contacto ('cellular', 'telephone'). |
+| **month** | `object` | 41188 | Último mes de contacto del año. |
+| **day_of_week** | `object` | 41188 | Último día de contacto de la semana. |
+| **duration** | `int64` | 41188 | Duración del último contacto, en segundos (variable muy importante y debe eliminarse después del contacto). |
+| **campaign** | `int64` | 41188 | Número de contactos realizados durante esta campaña para este cliente. |
+| **pdays** | `int64` | 41188 | Número de días transcurridos desde el último contacto de la campaña anterior (999 significa que el cliente no fue contactado previamente). |
+| **previous** | `int64` | 41188 | Número de contactos realizados antes de esta campaña para este cliente. |
+| **poutcome** | `object` | 41188 | Resultado de la campaña de marketing anterior ('failure', 'nonexistent', 'success'). |
+| **emp.var.rate** | `float64` | 41188 | Tasa de variación del empleo (indicador trimestral). |
+| **cons.price.idx** | `float64` | 41188 | Índice de precios al consumidor (indicador mensual). |
+| **cons.conf.idx** | `float64` | 41188 | Índice de confianza del consumidor (indicador mensual). |
+| **euribor3m** | `float64` | 41188 | Tasa Euribor a 3 meses (indicador diario). |
+| **nr.employed** | `float64` | 41188 | Número de empleados (indicador trimestral). |
+| **y** | `object` | 41188 | **Variable objetivo:** ¿Se suscribió a un depósito a largo plazo? ('yes' o 'no'). |
 
-**Instalación**
+---
 
-Clona el repositorio del proyecto en tu máquina local.
+## 🚀 Metodología
 
-Navega hasta el directorio del proyecto e instala los paquetes de Python requeridos:
+### 1. Preprocesamiento de Datos
+* **Eliminación de Duplicados:** Se eliminaron **12** filas duplicadas encontradas en el conjunto de datos.
+* **Codificación de Variables Categóricas:** Las 11 columnas de tipo `object` (categóricas), incluyendo la variable objetivo `y`, fueron convertidas a formato numérico utilizando **Label Encoding** para hacerlas aptas para el modelo de Regresión Logística.
+* **Escalado de Características:** Las características continuas y numéricas (`age`, `duration`, `campaign`, `pdays`, `previous`, `emp.var.rate`, `cons.price.idx`, `cons.conf.idx`, `euribor3m`, `nr.employed`) fueron **escaladas** para estandarizar su rango de valores.
 
-```bash
-pip install -r requirements.txt
-```
+### 2. Entrenamiento del Modelo
+* **Algoritmo:** **Regresión Logística** (`LogisticRegression`).
+* **Búsqueda de Hiperparámetros:** Se utilizó `GridSearchCV` para encontrar la combinación óptima de hiperparámetros que maximice el *accuracy* del modelo en el conjunto de entrenamiento.
+    * **Hiperparámetros explorados:**
+        ```python
+        hyperparams = {
+            "penalty": ['l1', 'l2', 'elasticnet', None],
+            "dual": [True, False],
+            "C": [1.0, 0.5, 0.05, 0.10, 1.5, 2.0]
+        }
+        ```
+    * **Mejores Hiperparámetros encontrados:** `{'C': 1.0, 'dual': False, 'penalty': 'l1'}` (utilizando `solver='liblinear'`).
 
-**Crear una base de datos (si es necesario)**
+## 🎯 Resultados
 
-Crea una nueva base de datos dentro del motor Postgres personalizando y ejecutando el siguiente comando: 
+El modelo final, ajustado con los mejores hiperparámetros, arrojó una precisión (accuracy) máxima de **0.90892**.
 
-```bash
-$ psql -U postgres -c "DO \$\$ BEGIN 
-    CREATE USER mi_usuario WITH PASSWORD 'mi_contraseña'; 
-    CREATE DATABASE mi_base_de_datos OWNER mi_usuario; 
-END \$\$;"
-```
-Conéctate al motor Postgres para usar tu base de datos, manipular tablas y datos: 
+El rendimiento del modelo en la matriz de confusión es (valores de ejemplo del output):
 
-```bash
-$ psql -U mi_usuario -d mi_base_de_datos
-```
+| Predicción | Real: No | Real: Sí |
+| :--- | :--- | :--- |
+| **Predicción: No** (Verdaderos Negativos: TN) | **7129** | Falsos Negativos (FN): 169 |
+| **Predicción: Sí** (Falsos Positivos: FP) | 558 | **Verdaderos Positivos** (TP): 382 |
 
-¡Una vez que estés dentro de PSQL podrás crear tablas, hacer consultas, insertar, actualizar o eliminar datos y mucho más!
+*(Nota: Los valores de la matriz de confusión aquí son de una validación específica y pueden variar)*
 
-**Variables de entorno**
+---
 
-Crea un archivo .env en el directorio raíz del proyecto para almacenar tus variables de entorno, como tu cadena de conexión a la base de datos:
+## 🧠 Tecnologías Utilizadas
 
-```makefile
-DATABASE_URL="postgresql://<USUARIO>:<CONTRASEÑA>@<HOST>:<PUERTO>/<NOMBRE_BD>"
+- **Python**  
+- **Pandas**, **NumPy** – para manipulación y limpieza de datos  
+- **Matplotlib**, **Seaborn** – para visualización de datos  
+- **Scikit-learn** – para la creación y evaluación de modelos predictivos  
+- **Jupyter Notebook** – entorno de desarrollo interactivo  
 
-#example
-DATABASE_URL="postgresql://mi_usuario:mi_contraseña@localhost:5432/mi_base_de_datos"
-```
+---
 
-## Ejecutando la Aplicación
+## ⚙️ Instalación
 
-Para ejecutar la aplicación, ejecuta el script app.py desde la raíz del directorio del proyecto:
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/nombre-del-repositorio.git
+   ```
+2. Acceder al directorio del proyecto:
+   ```bash
+   cd nombre-del-repositorio
+   ```
+3. Instalar las dependencias necesarias:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-python src/app.py
-```
+*(Asegúrate de tener Python 3.8 o superior instalado.)*
 
-## Añadiendo Modelos
+---
 
-Para añadir clases de modelos SQLAlchemy, crea nuevos archivos de script de Python dentro del directorio models/. Estas clases deben ser definidas de acuerdo a tu esquema de base de datos.
+## 🚀 Uso
 
-Definición del modelo de ejemplo (`models/example_model.py`):
+1. Abre el archivo `explorar.ipynb` con **Jupyter Notebook** o **JupyterLab**.  
+2. Ejecuta las celdas en orden para:
+   - Cargar y limpiar los datos.  
+   - Analizar las variables y sus relaciones.  
+   - Probar modelos de clasificación.  
+   - Evaluar los resultados.  
 
-```py
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+3. Revisa las conclusiones y gráficos generados al final del análisis.
 
-Base = declarative_base()
+---
 
-class ExampleModel(Base):
-    __tablename__ = 'example_table'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(unique=True)
-```
+## 📊 Resultados Esperados
 
-## Trabajando con Datos
+- Identificación de las variables con mayor influencia en la decisión del cliente.  
+- Un modelo predictivo con métricas adecuadas de precisión y recall.  
+- Recomendaciones para optimizar las futuras campañas de marketing.  
 
-Puedes colocar tus conjuntos de datos brutos en el directorio data/raw, conjuntos de datos intermedios en data/interim, y los conjuntos de datos procesados listos para el análisis en data/processed.
+---
 
-Para procesar datos, puedes modificar el script app.py para incluir tus pasos de procesamiento de datos, utilizando pandas para la manipulación y análisis de datos.
+## 👤 Autor
 
-## Contribuyentes
-
-Esta plantilla fue construida como parte del [Data Science and Machine Learning Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning) de 4Geeks Academy por [Alejandro Sanchez](https://twitter.com/alesanchezr) y muchos otros contribuyentes. Descubre más sobre [los programas BootCamp de 4Geeks Academy](https://4geeksacademy.com/us/programs) aquí.
-
-Otras plantillas y recursos como este se pueden encontrar en la página de GitHub de la escuela.
+**Bryan Jumbo Torres**  
+📍 Mallorca, España  
+💻 Proyecto académico / profesional de análisis de datos  
