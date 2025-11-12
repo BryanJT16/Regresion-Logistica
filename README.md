@@ -73,6 +73,58 @@ Debido a una disminución en los ingresos, el banco desea enfocar sus recursos e
         ```
     * **Mejores Hiperparámetros encontrados:** `{'C': 1.0, 'dual': False, 'penalty': 'l1'}` (utilizando `solver='liblinear'`).
 
+## 📚 ¿Qué es la Regresión Logística y cómo se usa en este proyecto?
+
+La Regresión Logística es un modelo estadístico y de aprendizaje automático utilizado para clasificar observaciones en dos o más categorías.
+A diferencia de la Regresión Lineal, que predice valores continuos, la Regresión Logística predice probabilidades que luego se convierten en clases (por ejemplo, sí o no) utilizando un umbral, normalmente de 0.5.
+
+### 🧠 Concepto Básico
+
+El modelo estima la probabilidad de que ocurra un evento (por ejemplo, que un cliente acepte un depósito a largo plazo) a partir de una combinación lineal de variables de entrada, como la edad, la ocupación o la duración de la llamada.
+
+Matemáticamente se expresa como:
+
+P(y = 1 | X) = 1 / (1 + e^-(β0 + β1x1 + β2x2 + ... + βnxn))
+
+Donde:
+
+* P(y=1∣X) → es la probabilidad de que el cliente acepte la oferta.
+
+* xᵢ → son las variables predictoras (características del cliente).
+
+* βᵢ →son los coeficientes aprendidos por el modelo.
+
+Si la probabilidad resultante es mayor o igual a 0.5, el modelo clasifica el resultado como “Sí” (el cliente acepta); en caso contrario, como “No”.
+
+### 🎯 ¿Por qué se usa?
+
+* Permite modelar relaciones entre variables numéricas y categóricas.
+
+* Ofrece resultados fáciles de interpretar, ya que cada coeficiente indica el peso o influencia de una variable sobre el resultado.
+
+* Proporciona probabilidades, no solo clasificaciones, lo que ayuda a medir el grado de confianza de cada predicción.
+
+* Es eficiente computacionalmente, ideal para proyectos de análisis y predicción como este.
+
+### ⚙️ Aplicación en este Proyecto
+
+En este proyecto, la Regresión Logística se utiliza como una herramienta para entender y predecir el comportamiento de los clientes durante las campañas de marketing.
+
+El modelo aprende a partir de los datos históricos del banco, que incluyen información sobre clientes anteriores y si aceptaron o no el depósito a largo plazo.
+Durante el entrenamiento, la regresión logística analiza las relaciones entre las variables: por ejemplo, puede detectar que las personas con empleo estable, buena situación económica y llamadas más largas tienden a aceptar el producto.
+
+Una vez entrenado, el modelo puede recibir datos de un nuevo cliente y, con base en patrones aprendidos, calcular la probabilidad de que acepte la oferta.
+De esta forma, el banco puede:
+
+* Priorizar a los clientes más propensos a decir que sí.
+
+* Evitar contactar repetidamente a quienes es muy poco probable que acepten.
+
+* Entender qué características están más relacionadas con el éxito de una campaña.
+
+En resumen, la regresión logística convierte un conjunto de datos complejos en una herramienta práctica de decisión, ayudando a planificar las campañas de manera más eficiente y rentable.
+
+
 ## 🎯 Resultados
 
 El modelo final, ajustado con los mejores hiperparámetros, arrojó una precisión (accuracy) máxima de **0.90892**.
