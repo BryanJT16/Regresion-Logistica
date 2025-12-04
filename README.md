@@ -22,6 +22,7 @@ Debido a una disminución en los ingresos, el banco desea enfocar sus recursos e
 - Identificar patrones y variables más relevantes que influyen en la suscripción del producto.  
 - Construir un modelo predictivo que permita estimar la probabilidad de éxito de futuras campañas.  
 - Presentar conclusiones y recomendaciones basadas en los resultados obtenidos.
+- Crear un ejecutable que pruebe el modelo
 
 ---
 
@@ -179,7 +180,7 @@ El rendimiento del modelo en la matriz de confusión es (valores de ejemplo del 
    - Evaluar los resultados.  
 
 3. Revisa las conclusiones y gráficos generados al final del análisis.
-
+4. Puedes ejecutar app.py para probar ejemplos por tu cuenta.
 ---
 
 ## 📊 Resultados Esperados
