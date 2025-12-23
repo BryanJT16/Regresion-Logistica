@@ -151,38 +151,6 @@ El rendimiento del modelo en la matriz de confusión es (valores de ejemplo del 
 
 ---
 
-## ⚙️ Instalación
-
-1. Clonar el repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/nombre-del-repositorio.git
-   ```
-2. Acceder al directorio del proyecto:
-   ```bash
-   cd nombre-del-repositorio
-   ```
-3. Instalar las dependencias necesarias:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-*(Asegúrate de tener Python 3.8 o superior instalado.)*
-
----
-
-## 🚀 Uso
-
-1. Abre el archivo `explorar.ipynb` con **Jupyter Notebook** o **JupyterLab**.  
-2. Ejecuta las celdas en orden para:
-   - Cargar y limpiar los datos.  
-   - Analizar las variables y sus relaciones.  
-   - Probar modelos de clasificación.  
-   - Evaluar los resultados.  
-
-3. Revisa las conclusiones y gráficos generados al final del análisis.
-4. Puedes ejecutar app.py para probar ejemplos por tu cuenta.
----
-
 ## 📊 Resultados Esperados
 
 - Identificación de las variables con mayor influencia en la decisión del cliente.  
